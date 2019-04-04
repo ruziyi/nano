@@ -37,6 +37,7 @@ type NetworkEntity interface {
 	Response(v interface{}) error
 	ResponseMID(mid uint, v interface{}) error
 	Close() error
+	Kick(data) error
 	RemoteAddr() net.Addr
 }
 
@@ -114,6 +115,10 @@ func (s *Session) Bind(uid int64) error {
 // all related data should be Clear explicitly in Session closed callback
 func (s *Session) Close() {
 	s.entity.Close()
+}
+
+func (s *Session) Kick(data string) {
+	s.entity.Kick(data)
 }
 
 // RemoteAddr returns the remote network address.
