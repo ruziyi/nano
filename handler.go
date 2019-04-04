@@ -215,6 +215,10 @@ func (h *handlerService) handle(conn net.Conn) {
 	// read loop
 	buf := make([]byte, 2048)
 	for {
+		if agent.status() == statusKicked {
+			logger.Println("The conn has been kicked")
+			return
+		}
 		n, err := conn.Read(buf)
 		if err != nil {
 			logger.Println(fmt.Sprintf("Read message error: %s, session will be closed immediately", err.Error()))

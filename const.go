@@ -26,4 +26,5 @@ const (
 	statusHandshake
 	statusWorking
 	statusClosed
+	statusKicked
 )

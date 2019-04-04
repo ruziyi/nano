@@ -41,6 +41,7 @@ const (
 var (
 	// ErrBrokenPipe represents the low-level connection has broken.
 	ErrBrokenPipe = errors.New("broken low-level pipe")
+	ErrKicked     = errors.New("already kicked")
 	// ErrBufferExceed indicates that the current session buffer is full and
 	// can not receive more data.
 	ErrBufferExceed = errors.New("session send buffer exceed")
@@ -188,6 +189,26 @@ func (a *agent) Close() error {
 	}
 
 	return a.conn.Close()
+}
+
+func (a *agent) Kick(data string) error {
+	if a.status() == statusClosed {
+		return ErrBrokenPipe
+	}
+	if a.status() = statusKicked {
+		return ErrKicked
+	}
+
+	a.setStatus(statusKicked)
+	message, err := codec.Encode(packet.Kick, []byte(data))
+	if err != nil {
+		logger.Println("encode kick message err:", err)
+	}
+	if env.debug {
+		logger.Println(fmt.Sprintf("Type=Kick, ID=%d, UID=%d, Data=%s",
+			a.session.ID(), a.session.UID(), data))
+	}
+	return a.conn.Write(message)
 }
 
 // RemoteAddr, implementation for session.NetworkEntity interface

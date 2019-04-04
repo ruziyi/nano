@@ -37,6 +37,7 @@ type NetworkEntity interface {
 	Response(v interface{}) error
 	ResponseMID(mid uint, v interface{}) error
 	Close() error
+	Kick() error
 	RemoteAddr() net.Addr
 }
 
