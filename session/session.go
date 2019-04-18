@@ -37,7 +37,7 @@ type NetworkEntity interface {
 	Response(v interface{}) error
 	ResponseMID(mid uint, v interface{}) error
 	Close() error
-	Kick(data) error
+	Kick(data string) error
 	RemoteAddr() net.Addr
 }
 
@@ -50,7 +50,9 @@ var (
 // keep connected, all data will be released when the low-level connection was broken.
 // Session instance related to the client will be passed to Handler method as the first
 // parameter.
-type Session struct {
+type
+
+Session struct {
 	sync.RWMutex                        // protect data
 	id           int64                  // session global unique id
 	uid          int64                  // binding user id

@@ -216,8 +216,8 @@ func (h *handlerService) handle(conn net.Conn) {
 	buf := make([]byte, 2048)
 	for {
 		if agent.status() == statusKicked {
-			agent.Close()
 			logger.Println("The conn has been kicked, will be closed")
+			agent.Close()
 			return
 		}
 		n, err := conn.Read(buf)
